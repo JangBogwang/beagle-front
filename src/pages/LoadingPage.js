@@ -24,6 +24,7 @@ export default function LoadingPage() {
       }
 
       try {
+        console.log("Requesting article with category:", selectedCategory);
         const articleRes = await fetch(
           `${BaseURL}/get_first_doc?category=${selectedCategory}`,
           {
@@ -32,14 +33,15 @@ export default function LoadingPage() {
           }
         );
 
-
         if (!articleRes.ok) {
-          throw new Error("Failed to fetch article");
+          throw new Error(`Failed to fetch article: ${articleRes.statusText}`);
         }
 
         const articleData = await articleRes.json();
+        console.log("Received article data:", articleData);
 
         // Call /render_level API
+        console.log("Requesting render_level with:", { learningLevel, title: articleData.title });
         const renderLevelRes = await fetch(
           `${BaseURL}/render_level?input_level=${learningLevel}&input_title=${articleData.title}&input_content=${articleData.content}`,
           {
@@ -48,11 +50,12 @@ export default function LoadingPage() {
           }
         );
 
-        const renderLevelData = await renderLevelRes.json();
-
         if (!renderLevelRes.ok) {
-          throw new Error("Failed to render level");
+          throw new Error(`Failed to render level: ${renderLevelRes.statusText}`);
         }
+
+        const renderLevelData = await renderLevelRes.json();
+        console.log("Received render_level data:", renderLevelData);
 
         articleData.content = renderLevelData.rendered_content;
         articleData.title = renderLevelData.rendered_title;

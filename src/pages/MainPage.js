@@ -9,6 +9,7 @@ export default function MainPage() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [questions, setQuestions] = useState(Array(3).fill({ isLoading: true }));
+  const [allQuestionsLoaded, setAllQuestionsLoaded] = useState(false);
   const baseUrl = process.env.REACT_APP_API_BASE_URL;
 
   const location = useLocation();
@@ -34,6 +35,14 @@ export default function MainPage() {
 
   }, [location.state]);
 
+  useEffect(() => {
+    // Check if all 3 questions are loaded (no longer in loading state)
+    const areAllLoaded = questions.length === 3 && questions.every(q => !q.isLoading);
+    if (areAllLoaded) {
+      setAllQuestionsLoaded(true);
+    }
+  }, [questions]);
+
  const fetchQuestions = async (articleData) => {
   const query = new URLSearchParams({
     doc_title: articleData.title,
@@ -41,11 +50,12 @@ export default function MainPage() {
     doc_url: articleData.url || ""
   }).toString();
 
-  const questionPromises = Array(3).fill(null).map(() =>
-    fetch(`${baseUrl}/gen_question?${query}`, {
-      method: "POST", // ✅ 공백 제거
-    })
-  );
+  const questionPromises = Array(3).fill(null).map(() => {
+    console.log("Requesting new question with article:", { title: articleData.title });
+    return fetch(`${baseUrl}/gen_question?${query}`, {
+      method: "POST",
+    });
+  });
 
   const questionResults = await Promise.allSettled(questionPromises);
 
@@ -53,6 +63,7 @@ export default function MainPage() {
     if (result.status === "fulfilled") {
       try {
         const questionData = await result.value.json();
+        console.log(`Received question ${index + 1} data:`, questionData);
         updateQuestionState(index, { ...questionData, isLoading: false, error: null });
         fetchTaildocAndAnswer(questionData, index, articleData);
       } catch (e) {
@@ -70,7 +81,6 @@ export default function MainPage() {
     }
   });
 };
-
   const fetchTaildocAndAnswer = async (question, index, mainArticle) => {
     try {
       // Fetch taildoc
@@ -103,6 +113,38 @@ export default function MainPage() {
       );
       if (!answerRes.ok) throw new Error("Failed to fetch answer");
       const answerData = await answerRes.json();
+
+      // Render taildoc content based on learning level
+      if (learningLevel && taildocData.title && taildocData.content) {
+        try {
+          console.log(`Requesting render_level for taildoc ${index + 1}`);
+          const renderLevelRes = await fetch(
+            `${baseUrl}/render_level?input_level=${learningLevel}&input_title=${encodeURIComponent(
+              taildocData.title)}&input_content=${encodeURIComponent(taildocData.content)}`,
+            {
+              method: "POST",
+              headers: { "Content-Type": "application/json" },
+            }
+          );
+
+          if (renderLevelRes.ok) {
+            const renderLevelData = await renderLevelRes.json();
+            console.log(`${renderLevelData.rendered_question} +  ${taildocData.answer}`)
+            console.log(`Received render_level for taildoc ${index + 1} data:`, renderLevelData);
+            taildocData.title =
+              renderLevelData.rendered_title || taildocData.title;
+            taildocData.content =
+              renderLevelData.rendered_content || taildocData.content;
+          } else {
+            console.error(
+              "꼬리문서 난이도 렌더링 실패:",
+              await renderLevelRes.text()
+            );
+          }
+        } catch (renderError) {
+          console.error("꼬리문서 난이도 렌더링 중 예외 발생:", renderError);
+        }
+      }
 
       updateQuestionState(index, { taildoc: { ...taildocData, ...answerData }, isLoading: false, error: null });
     } catch (err) {
@@ -151,14 +193,13 @@ export default function MainPage() {
             <div className="main-card">
               <div className="article-header">
                 <h2 className="article-title">{article.title}</h2>
+              </div>
+              <p className="article-content">{article.content}</p>
+              <div className="article-meta-bottom">
                 <div className="article-meta-top">
                   <span><strong>날짜:</strong> {article.date}</span>
                   <span><strong>카테고리:</strong> {Array.isArray(article.category) ? article.category.join(', ') : article.category}</span>
                 </div>
-              </div>
-              <p className="article-content">{article.content}</p>
-              <div className="article-meta-bottom">
-                <p><strong>관련 질문:</strong> {article.query}</p>
                 <p>
                   <strong>원본 링크:</strong>{' '}
                   <a href={article.url} target="_blank" rel="noopener noreferrer">

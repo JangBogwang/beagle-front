@@ -12,7 +12,7 @@ export default function QuestionCard({ question, index }) {
   const handleViewAnswerClick = (e) => {
     e.stopPropagation(); // Prevent card from flipping when button is clicked
     if (question.taildoc) {
-      navigate('/taildoc', { state: { taildoc: question.taildoc } });
+      navigate('/taildoc', { state: { taildoc: question.taildoc, question: question.question } });
     }
   };
 
