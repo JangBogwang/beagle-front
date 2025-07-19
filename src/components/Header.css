@@ -1,0 +1,29 @@
+.hd {
+  background: #fff;
+  border-bottom: 1px solid #e3e3e3;
+  padding: 1rem 0;
+  position: sticky;
+  top: 0;
+  z-index: 10;
+}
+.hd__inner {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 90%;
+  margin: 0 auto;
+}
+.hd__logo {
+  font-size: 1.25rem;
+  font-weight: bold;
+  color: #007bff;
+}
+.hd__nav a {
+  margin-left: 1.5rem;
+  font-size: 0.95rem;
+  color: #555;
+  transition: color .2s;
+}
+.hd__nav a:hover {
+  color: #007bff;
+}

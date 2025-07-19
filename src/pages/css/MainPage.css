@@ -1,0 +1,481 @@
+/* MainPage.css */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+
+.main-container {
+  min-height: 100vh;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); /* Consistent with Login */
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  overflow: hidden;
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  color: white; /* Text color for contrast */
+  text-align: center;
+  padding: 20px;
+}
+
+/* Background decorations consistent with Login */
+.main-background-decoration {
+  position: absolute;
+  border-radius: 50%;
+  filter: blur(60px);
+  opacity: 0.3;
+  animation: float 6s ease-in-out infinite;
+}
+
+.main-decoration-1 {
+  top: -100px;
+  right: -100px;
+  width: 200px;
+  height: 200px;
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.4), rgba(255, 255, 255, 0.1));
+}
+
+.main-decoration-2 {
+  bottom: -100px;
+  left: -100px;
+  width: 200px;
+  height: 200px;
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.1), rgba(255, 255, 255, 0.4));
+  animation-delay: 3s;
+}
+
+@keyframes float {
+  0%, 100% { transform: translateY(0px); }
+  50% { transform: translateY(-20px); }
+}
+
+.main-content {
+  width: 100%;
+  max-width: 800px; /* Adjust as needed */
+  position: relative;
+  z-index: 1;
+}
+
+.main-header {
+  text-align: center;
+  margin-bottom: 30px;
+}
+
+.main-title {
+  font-size: 28px;
+  font-weight: 700;
+  color: white;
+  margin: 0 0 10px;
+  text-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+}
+
+.main-subtitle {
+  color: rgba(255, 255, 255, 0.9);
+  font-size: 16px;
+  margin: 0;
+  font-weight: 400;
+}
+
+.main-card {
+  background: rgba(255, 255, 255, 0.95);
+  backdrop-filter: blur(20px);
+  border-radius: 20px;
+  padding: 40px;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  animation: slideUp 0.6s ease-out;
+  text-align: left;
+}
+
+@keyframes slideUp {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.article-title {
+  font-size: 24px;
+  color: #374151;
+  margin-bottom: 20px;
+}
+
+.article-content {
+  font-size: 16px;
+  color: #4b5563;
+  line-height: 1.6;
+  margin-bottom: 20px;
+}
+
+.article-meta {
+  font-size: 14px;
+  color: #6b7280;
+  border-top: 1px solid #e5e7eb;
+  padding-top: 15px;
+  margin-top: 15px;
+}
+
+.article-meta p {
+  margin-bottom: 8px;
+}
+
+.article-meta strong {
+  color: #374151;
+}
+
+.article-meta a {
+  color: #667eea;
+  text-decoration: none;
+}
+
+.article-meta a:hover {
+  text-decoration: underline;
+}
+
+.error-message {
+  color: #dc2626;
+  background: #fef2f2;
+  border: 1px solid #fecaca;
+  padding: 15px;
+  border-radius: 10px;
+  margin-top: 20px;
+}
+
+/* MainPage.css */
+.news-container {
+  display: flex;
+  justify-content: center;
+  padding: 4rem 2rem;
+  background: #f9fafb; /* Lighter gray background */
+  font-family: 'Inter', sans-serif;
+}
+
+.news-article:hover {
+  transform: translateY(-10px);
+  box-shadow: 0 12px 35px rgba(0, 0, 0, 0.15);
+}
+
+/* 뉴스 카드 */
+.news-article {
+  max-width: 800px;
+  width: 100%;
+  background: #ffffff;
+  border-radius: 20px; /* Slightly more rounded corners */
+  border-left: 8px solid #667eea;
+  box-shadow: 0 6px 25px rgba(0, 0, 0, 0.09);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  overflow: hidden;
+  padding: 40px; /* Increased padding */
+}
+
+/* 제목 그라데이션 텍스트 */
+.article-header {
+  border-bottom: 1px solid #e5e7eb;
+  padding-bottom: 1.5rem;
+  margin-bottom: 1.5rem;
+}
+
+.article-title {
+  font-size: 2.2rem; /* Reduced font size */
+  margin-bottom: 1rem;
+  color: #1f2937; /* Dark charcoal color */
+}
+
+.article-meta-top {
+  display: flex;
+  gap: 1.5rem;
+  font-size: 0.9rem;
+  color: #6b7280;
+}
+
+.article-meta-bottom {
+  font-size: 0.9rem;
+  color: #6b7280;
+  margin-top: 1.5rem;
+  border-top: 1px solid #e5e7eb;
+  padding-top: 1.5rem;
+}
+
+/* 메타 정보 */
+.article-meta {
+  font-size: 1rem; /* Larger meta text */
+  color: #4b5563; /* Darker meta text */
+  margin-bottom: 2rem;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1.5rem;
+}
+
+/* 본문 */
+.article-content {
+  font-size: 1.1rem; /* Larger content text */
+  line-height: 1.8; /* Increased line height */
+  color: #374151;
+  margin-bottom: 2rem;
+  white-space: pre-line;
+}
+
+/* 구분선 (선택사항) */
+.article-content + hr {
+  border: none;
+  border-top: 1px solid #e5e7eb;
+  margin: 2rem 0;
+}
+
+/* 푸터 */
+.article-footer p {
+  margin: 0.5rem 0;
+  font-size: 0.9rem;
+  color: #4b5563;
+}
+
+.article-footer a {
+  color: #667eea;
+  text-decoration: none;
+}
+.article-footer a:hover {
+  text-decoration: underline;
+}
+.questions-section-title{
+  margin-top: 5%;
+  font-size: xx-large;
+}
+
+/* Questions grid styling */
+.questions-grid {
+  display: grid;
+  /* 데스크탑에선 3열, 최소 300px 폭 */
+  grid-template-columns: repeat(3, minmax(200px, 1fr));
+  gap: 30px;
+  margin-top: 40px;
+  padding: 40px 20px;
+
+  /* 배경 / 둥근 테두리 / 흐림 효과 */
+  background: rgba(255, 255, 255, 0.05);
+  border-radius: 25px;
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  box-shadow:
+    0 20px 40px rgba(0, 0, 0, 0.1),
+    inset 0 1px 0 rgba(255, 255, 255, 0.1);
+}
+
+/* Question card container */
+.question-card-container {
+  perspective: 1200px;
+  width: 100%;
+  /* 3:4 세로 비율로 세로 긴 카드 */
+  aspect-ratio: 3 / 5;
+  cursor: pointer;
+  transition: transform 0.3s ease;
+}
+
+.question-card-container:hover {
+  transform: translateY(-30px);
+}
+
+/* Main card styling */
+.question-card {
+  width: 100%;
+  height: 100%;
+  position: relative;
+  transform-style: preserve-3d;
+  transition: all 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  border-radius: 20px;
+  box-shadow: 
+    0 15px 35px rgba(0, 0, 0, 0.1),
+    0 5px 15px rgba(0, 0, 0, 0.05);
+}
+
+.question-card.flipped {
+  transform: rotateY(180deg);
+}
+
+.question-card.hovered {
+  box-shadow: 
+    0 25px 50px rgba(0, 0, 0, 0.15),
+    0 10px 25px rgba(0, 0, 0, 0.1);
+}
+
+/* Card faces */
+.question-card-front, 
+.question-card-back {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  backface-visibility: hidden;
+  border-radius: 20px;
+  padding: 0;
+  box-sizing: border-box;
+  overflow: hidden;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+}
+
+/* Front face - Question */
+.question-card-front {
+  background-image: url('../../assets/card-front.png');
+  background-size: cover;
+  background-position: center;
+  backdrop-filter: blur(20px);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  color: #928ab8; /* Set base color for front */
+}
+
+.question-card-front::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, 
+    transparent, 
+    rgba(255, 255, 255, 0.4), 
+    transparent);
+  transition: left 0.5s ease;
+}
+
+.question-card-front:hover::before {
+  left: 100%;
+}
+
+/* Back face - Card number */
+.question-card-back {
+  background-image: url('../../assets/card.png');
+  background-size: cover;
+  background-position: center;
+  transform: rotateY(180deg);
+  display: flex;
+  flex-direction: column;
+  justify-content: center; /* Center content vertically */
+  align-items: center; /* Center content horizontally */
+  text-align: center; /* Center text */
+  color: #2d3748; /* Set base color for back */
+  padding: 5%;
+}
+
+.question-card-back::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, 
+    transparent, 
+    rgba(255, 255, 255, 0.2), 
+    transparent);
+  transition: left 0.5s ease;
+}
+
+.question-card-back:hover::before {
+  left: 100%;
+}
+
+/* Question text */
+.question-card-front h3 {
+  font-size: 1.1rem;
+  font-weight: 600;
+  line-height: 1.5;
+  margin: 0 0 20px 0;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+}
+
+/* Question number on back */
+.question-number {
+  font-size: 3rem;
+  font-weight: 800;
+  margin-bottom: 10px;
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+  background: linear-gradient(45deg, #ffffff, #f0f0f0);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.question-card-front .flip-hint {
+  background: rgba(0, 0, 0, 0.05);
+}
+
+.question-card-back .flip-hint {
+  background: rgba(255, 255, 255, 0.1);
+}
+
+.question-card-front .scrollable-content {
+  color: inherit; /* Inherit color from parent */
+}
+
+.question-card-back h3 {
+  color: inherit; /* Inherit color from parent */
+}
+
+.question-card-front .flip-hint {
+  color: inherit; /* Inherit color from parent */
+}
+
+.question-card-back .flip-hint {
+  color: inherit; /* Inherit color from parent */
+}
+
+
+/* Question text */
+.question-card-front h3 {
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: #928ab8; /* Explicitly set color for h3 on front */
+  line-height: 1.5;
+  margin: 0 0 20px 0;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+}
+
+/* Question number on back */
+.question-number {
+  font-size: 3rem;
+  font-weight: 800;
+  color: #928ab8; /* Explicitly set color for question number */
+  margin-bottom: 10px;
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+  background: linear-gradient(45deg, #ffffff, #f0f0f0);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.question-card-front .flip-hint {
+  color: #928ab8; /* Set flip-hint color to match front text */
+  background: rgba(0, 0, 0, 0.05);
+}
+
+
+.view-answer-button {
+  position: absolute;
+  bottom: 20px;
+  padding: 10px 24px;
+  background-color: #6c5ce7;
+  color: white;
+  font-size: 16px;
+  font-weight: 600;
+  border: none;
+  border-radius: 12px;
+  box-shadow: 0 4px 8px rgba(108, 92, 231, 0.3);
+  cursor: pointer;
+  transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+.view-answer-button:hover {
+  background-color: #5a4bd8;
+  transform: translateY(-2px);
+}
+
+.view-answer-button:active {
+  transform: scale(0.97);
+}
