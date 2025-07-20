@@ -63,7 +63,7 @@ export default function TaildocPage() {
               <ReactMarkdown>{taildoc.content}</ReactMarkdown>
             </div>
             <div className="article-meta-bottom">
-              <span><strong>Date:</strong> {taildoc.date}</span>
+              <span><strong>Date:</strong> {taildoc.date}{'  '}</span>
               <span>
                 <strong>Category:</strong>{' '}
                 {Array.isArray(taildoc.category)

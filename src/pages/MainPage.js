@@ -64,6 +64,40 @@ export default function MainPage() {
       try {
         const questionData = await result.value.json();
         console.log(`Received question ${index + 1} data:`, questionData);
+
+        // Render question content based on learning level
+        if (learningLevel && questionData.question) {
+          try {
+            console.log(`Requesting render_level for question ${index + 1}`);
+            const renderLevelRes = await fetch(
+              `${baseUrl}/render_level`, {
+              method: 'POST',
+              headers: {
+                'Content-Type': 'application/json',
+              },
+              body: JSON.stringify({
+                input_level: learningLevel,
+                input_question: questionData.question,
+              }),
+            });
+
+            if (renderLevelRes.ok) {
+              const renderLevelData = await renderLevelRes.json();
+              console.log(`Received render_level for question ${index + 1} data:`, renderLevelData);
+              if (renderLevelData.rendered_question) {
+                questionData.question = renderLevelData.rendered_question;
+              }
+            } else {
+              console.error(
+                `질문 ${index + 1} 난이도 렌더링 실패:`,
+                await renderLevelRes.text()
+              );
+            }
+          } catch (renderError) {
+            console.error(`질문 ${index + 1} 난이도 렌더링 중 예외 발생:`, renderError);
+          }
+        }
+
         updateQuestionState(index, { ...questionData, isLoading: false, error: null });
         fetchTaildocAndAnswer(questionData, index, articleData);
       } catch (e) {
@@ -82,6 +116,7 @@ export default function MainPage() {
   });
 };
   const fetchTaildocAndAnswer = async (question, index, mainArticle) => {
+    console.log(`[fetchTaildocAndAnswer] Processing question ${index + 1}:`, question.question);
     try {
       // Fetch taildoc
       const taildocRes = await fetch(
@@ -93,6 +128,7 @@ export default function MainPage() {
       );
       if (!taildocRes.ok) throw new Error("Failed to fetch taildoc");
       const taildocData = await taildocRes.json();
+      console.log(`[fetchTaildocAndAnswer] Fetched taildoc for question ${index + 1}:`, taildocData.title, taildocData.content);
 
       // Fetch answer
       const answerRes = await fetch(
@@ -113,23 +149,27 @@ export default function MainPage() {
       );
       if (!answerRes.ok) throw new Error("Failed to fetch answer");
       const answerData = await answerRes.json();
+      console.log(`[fetchTaildocAndAnswer] Fetched answer for question ${index + 1}:`, answerData.answer);
 
       // Render taildoc content based on learning level
       if (learningLevel && taildocData.title && taildocData.content) {
         try {
           console.log(`Requesting render_level for taildoc ${index + 1}`);
           const renderLevelRes = await fetch(
-            `${baseUrl}/render_level?input_level=${learningLevel}&input_title=${encodeURIComponent(
-              taildocData.title)}&input_content=${encodeURIComponent(taildocData.content)}`,
-            {
-              method: "POST",
-              headers: { "Content-Type": "application/json" },
-            }
-          );
+            `${baseUrl}/render_level`, {
+              method: 'POST',
+              headers: {
+                'Content-Type': 'application/json',
+              },
+              body: JSON.stringify({
+                input_level: learningLevel,
+                input_title: taildocData.title,
+                input_content: taildocData.content,
+              }),
+            });
 
           if (renderLevelRes.ok) {
             const renderLevelData = await renderLevelRes.json();
-            console.log(`${renderLevelData.rendered_question} +  ${taildocData.answer}`)
             console.log(`Received render_level for taildoc ${index + 1} data:`, renderLevelData);
             taildocData.title =
               renderLevelData.rendered_title || taildocData.title;
@@ -146,7 +186,40 @@ export default function MainPage() {
         }
       }
 
-      updateQuestionState(index, { taildoc: { ...taildocData, ...answerData }, isLoading: false, error: null });
+      // Render answer content based on learning level
+      if (learningLevel && answerData.answer) {
+        try {
+          console.log(`Requesting render_level for answer ${index + 1}`);
+          const renderAnswerRes = await fetch(
+            `${baseUrl}/render_level`, {
+              method: 'POST',
+              headers: {
+                'Content-Type': 'application/json',
+              },
+              body: JSON.stringify({
+                input_level: learningLevel,
+                input_answer: answerData.answer,
+              }),
+            });
+
+          if (renderAnswerRes.ok) {
+            const renderAnswerData = await renderAnswerRes.json();
+            console.log(`Received render_level for answer ${index + 1} data:`, renderAnswerData);
+            if (renderAnswerData.rendered_content) {
+              answerData.answer = renderAnswerData.rendered_content;
+            }
+          } else {
+            console.error(
+              "답변 난이도 렌더링 실패:",
+              await renderAnswerRes.text()
+            );
+          }
+        } catch (renderError) {
+          console.error("답변 난이도 렌더링 중 예외 발생:", renderError);
+        }
+      }
+      console.log(`Answer data before updateQuestionState for question ${index + 1}:`, answerData.answer);
+      updateQuestionState(index, { taildoc: { ...taildocData, answer: answerData.answer, rendered_question_from_answer: answerData.question }, isLoading: false, error: null, isTaildocRendered: true, isAnswerRendered: true });
     } catch (err) {
       updateQuestionState(index, { isLoading: false, taildoc: null });
     }
@@ -209,12 +282,20 @@ export default function MainPage() {
               </div>
             </div>
           )}
-          <h2 className="questions-section-title">추천 질문</h2>
-          <div className="questions-grid">
-            {questions.map((q, index) => (
-              <QuestionCard key={index} question={q} index={index} />
-            ))}
-          </div>
+          {allQuestionsLoaded ? (
+            <>
+              <h2 className="questions-section-title">추천 질문</h2>
+              <div className="questions-grid">
+                {questions.map((q, index) => (
+                  <QuestionCard key={index} question={q} index={index} />
+                ))}
+              </div>
+            </>
+          ):(
+            <div className="loading-questions">
+               <h2 className="questions-section-title">추천 질문 생성 중...</h2> 
+            </div>
+          )}
         </div>
       </div>
     </>

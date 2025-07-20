@@ -43,10 +43,16 @@ export default function LoadingPage() {
         // Call /render_level API
         console.log("Requesting render_level with:", { learningLevel, title: articleData.title });
         const renderLevelRes = await fetch(
-          `${BaseURL}/render_level?input_level=${learningLevel}&input_title=${articleData.title}&input_content=${articleData.content}`,
-          {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
+          `${BaseURL}/render_level`, {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+              input_level: learningLevel,
+              input_title: articleData.title,
+              input_content: articleData.content,
+            }),
           }
         );
 
