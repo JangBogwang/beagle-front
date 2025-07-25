@@ -30,25 +30,39 @@ export default function TaildocPage() {
       <Header />
       <div className="main-container">
         <div className="main-content">
-          {question && (
-            <div className={styles.questionDisplayCard}>
-              <h2 className={styles.questionTitle}>질문</h2>
-              <p className={styles.questionContent}>{question}</p>
-            </div>
-          )}
-
-          {taildoc.answer && (
-            <div className={styles.answerSection}>
-              <button onClick={toggleAnswer} className={styles.answerToggleButton}>
-                {isAnswerVisible ? '답변 숨기기' : '답변 보기'}
-              </button>
-              {isAnswerVisible && (
-                <div className={styles.answerContent}>
-                  <p>{taildoc.answer}</p>
+          <div className={styles['qa-container']}>
+            <div className={styles['qa-card']}>
+                <div className={styles['question-section']}>
+                    <div className={styles['question-header']}>
+                        <div className={styles['question-icon']}>
+                            <svg width="24" height="24" fill="currentColor" viewBox="0 0 24 24">
+                                <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/>
+                            </svg>
+                        </div>
+                        <div className={styles['question-label']}>Question</div>
+                    </div>
+                    <h2 className={styles['question-text']}>{question}</h2>
+                    <button className={`${styles['toggle-button']} ${isAnswerVisible ? styles.active : ''}`} onClick={toggleAnswer}>
+                        <span>{isAnswerVisible ? '답변 숨기기' : '답변 보기'}</span>
+                        <span className={styles['toggle-icon']}>▼</span>
+                    </button>
                 </div>
-              )}
+                
+                <div className={`${styles['answer-section']} ${isAnswerVisible ? styles.active : ''}`}>
+                    <div className={styles['answer-content']}>
+                        <div className={styles['answer-header']}>
+                            <div className={styles['answer-icon']}>
+                                <svg width="20" height="20" fill="currentColor" viewBox="0 0 24 24">
+                                    <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/>
+                                </svg>
+                            </div>
+                            <div className={styles['answer-label']}>정답</div>
+                        </div>
+                        <p className={styles['answer-text']}>{taildoc.answer}</p>
+                    </div>
+                </div>
             </div>
-          )}
+          </div>
 
           <div className="main-header">
             <h1 className="main-title">관련 학습 자료</h1>

@@ -2,6 +2,7 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Header from "../components/Header";
+import { Cpu, Landmark, Users, Palette, FlaskConical, Leaf } from 'lucide-react';
 import './css/SurveyPage.css';
 
 function SurveyPage() {
@@ -10,12 +11,12 @@ function SurveyPage() {
   const navigate = useNavigate();
 
   const categories = {
-    '기술': '리게티, 양자컴퓨터 오류율 절반으로…상용화 기대에 주가 30% 급등',
-    '경제': 'TSMC, AI 수요 호조에도 ‘헤드라인 리스크’ 발목',
-    '사회': '오산 가장교차로 고가도로 옹벽 붕괴…“차량 2대 깔려”',
-    '문화': '한류 열풍 조명한 뉴욕타임스, K문화 확산 걸림돌은 ‘이것’',
-    '과학': 'NASA 오디세이 궤도선, 아르시아 몬스 화산 구조 선명 촬영',
-    '환경': '2025 제주국제환경플러스포럼 개막…“플라스틱 제로 실천”',
+    '기술': { icon: <Cpu size={48} /> },
+    '경제': { icon: <Landmark size={48} /> },
+    '사회': { icon: <Users size={48} /> },
+    '문화': { icon: <Palette size={48} /> },
+    '과학': { icon: <FlaskConical size={48} /> },
+    '환경': { icon: <Leaf size={48} /> },
   };
 
   const handleSubmit = (e) => {
@@ -63,7 +64,7 @@ function SurveyPage() {
 
                         <h3 className="input-label" style={{ marginBottom: '15px' }}>선호 분야 선택 (1개)</h3>
                         <div className="category-grid">
-                            {Object.entries(categories).map(([category, title]) => (
+                            {Object.entries(categories).map(([category, { icon }]) => (
                                 <label
                                     key={category}
                                     className={`category-card ${selectedCategory === category ? 'selected' : ''}`}
@@ -76,8 +77,8 @@ function SurveyPage() {
                                         onChange={() => setSelectedCategory(category)}
                                     />
                                     <div className="category-content">
+                                        <div className="category-icon">{icon}</div>
                                         <h4>{category}</h4>
-                                        <p>{title}</p>
                                     </div>
                                 </label>
                             ))}

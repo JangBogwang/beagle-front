@@ -12,7 +12,7 @@ export default function QuestionCard({ question, index }) {
   const handleViewAnswerClick = (e) => {
     e.stopPropagation(); // Prevent card from flipping when button is clicked
     if (question.taildoc) {
-      navigate('/taildoc', { state: { taildoc: question.taildoc, question: question.question } });
+      navigate('/main', { state: { taildoc: question.taildoc, question: question.question } });
     }
   };
 
@@ -52,9 +52,9 @@ export default function QuestionCard({ question, index }) {
           <button 
             className="view-answer-button" 
             onClick={handleViewAnswerClick} 
-            disabled={!question.taildoc}
+            disabled={!question.taildoc || !question.isTaildocRendered || !question.isAnswerRendered}
           >
-            {question.taildoc ? '정답 보기' : '답변 준비 중...'}
+            {question.taildoc && question.isTaildocRendered && question.isAnswerRendered ? '정답 보기' : '답변 준비 중...'}
           </button>
         </div>
         <div className="question-card-front">

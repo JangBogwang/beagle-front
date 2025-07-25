@@ -205,8 +205,8 @@ export default function MainPage() {
           if (renderAnswerRes.ok) {
             const renderAnswerData = await renderAnswerRes.json();
             console.log(`Received render_level for answer ${index + 1} data:`, renderAnswerData);
-            if (renderAnswerData.rendered_content) {
-              answerData.answer = renderAnswerData.rendered_content;
+            if (renderAnswerData.rendered_answer) {
+              answerData.answer = renderAnswerData.rendered_answer;
             }
           } else {
             console.error(
