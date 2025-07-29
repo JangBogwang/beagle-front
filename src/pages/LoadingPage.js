@@ -40,6 +40,11 @@ export default function LoadingPage() {
         const articleData = await articleRes.json();
         console.log("Received article data:", articleData);
 
+        // Validate articleData
+        if (!articleData || !articleData.title || !articleData.content) {
+          throw new Error("Invalid or empty article data received.");
+        }
+
         // Call /render_level API
         console.log("Requesting render_level with:", { learningLevel, title: articleData.title });
         const renderLevelRes = await fetch(
@@ -60,14 +65,17 @@ export default function LoadingPage() {
           throw new Error(`Failed to render level: ${renderLevelRes.statusText}`);
         }
 
-        const renderLevelData = await renderLevelRes.json();
-        console.log("Received render_level data:", renderLevelData);
+        const renderedData = await renderLevelRes.json();
+        console.log("Received render_level data:", renderedData);
 
-        articleData.content = renderLevelData.rendered_content;
-        articleData.title = renderLevelData.rendered_title;
+        const finalArticle = {
+          ...articleData,
+          title: renderedData.rendered_title || articleData.title,
+          content: renderedData.rendered_content || articleData.content,
+        };
 
-        // Only navigate to main if render_level is successful
-        navigate("/main", { state: { articleData, learningLevel } });
+        // Navigate to main with the final, processed article data
+        navigate("/main", { state: { article: finalArticle, learningLevel } });
       } catch (error) {
         console.error("Error fetching article:", error);
         setLoadingMessage("학습 자료를 불러오는 데 실패했습니다. 다시 시도해주세요.");

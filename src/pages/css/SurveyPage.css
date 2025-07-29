@@ -179,18 +179,18 @@
     pointer-events: none;
   }
   
-  .category-content {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    gap: 10px;
-  }
+.category-content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+}
   
-  .category-icon {
-    color: #4b5563;
-    transition: color 0.3s ease;
-  }
+.category-icon {
+  color: #4b5563;
+  transition: color 0.3s ease;
+}
   
   .category-content h4 {
     margin: 0;

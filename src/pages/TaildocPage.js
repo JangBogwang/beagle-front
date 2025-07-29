@@ -1,13 +1,10 @@
 import React, { useState } from 'react';
-import { useLocation } from 'react-router-dom';
 import ReactMarkdown from 'react-markdown';
 import Header from '../components/Header';
 import './css/MainPage.css'; // Reuse main styles
 import styles from './css/TaildocPage.module.css'; // Import CSS module
 
-export default function TaildocPage() {
-  const location = useLocation();
-  const { taildoc, question } = location.state || {};
+export default function TaildocPage({ taildoc, question }) {
   const [isAnswerVisible, setIsAnswerVisible] = useState(false);
 
   if (!taildoc) {
